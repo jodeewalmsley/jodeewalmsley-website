@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="t1 d1">
+  <title id="t1">Placeholder hero photograph</title>
+  <desc id="d1">Replace with a professional photograph of Jo-Dee Walmsley before launch.</desc>
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#17294A"/>
+      <stop offset="100%" stop-color="#0F1F38"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#g1)"/>
+  <g opacity="0.18" stroke="#F1DCC9" stroke-width="1.5">
+    <circle cx="600" cy="450" r="380"/>
+    <circle cx="600" cy="450" r="300"/>
+    <circle cx="600" cy="450" r="220"/>
+  </g>
+  <rect x="70" y="770" width="1060" height="1" fill="#C17F59" opacity="0.5"/>
+  <text x="600" y="420" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#FAF6EF">PLACEHOLDER</text>
+  <text x="600" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#DDA57F">Hero photograph — replace before launch</text>
+  <text x="600" y="510" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#EAE0CF">Recommended: 1200×900px, professional portrait or lifestyle shot</text>
+</svg>

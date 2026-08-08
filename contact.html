@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[Placeholder — Contact Page Title] | Jo-Dee Walmsley</title>
+<meta name="description" content="[Placeholder meta description — replace before launch]">
+<link rel="canonical" href="https://www.jodeewalmsley.com/contact.html">
+<meta property="og:title" content="[Placeholder OG title]">
+<meta property="og:description" content="[Placeholder OG description]">
+<meta property="og:type" content="website">
+<meta property="og:image" content="images/placeholder-hero-home.svg">
+<meta property="og:url" content="https://www.jodeewalmsley.com/contact.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">Jo-Dee Walmsley<span class="logo-tag">Speaker &bull; Educator &bull; Author &bull; Creator of The L.A.U.G.H.T.E.R. Method&reg;</span></a>
+    <nav class="main-nav" aria-label="Primary">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul id="primary-menu" class="nav-list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="speaking.html">Speaking</a></li>
+        <li><a href="laughter-method.html">The Method</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="contact.html" aria-current="page">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn search-toggle" aria-expanded="false" aria-controls="search-overlay" aria-label="Open search">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="search-overlay" class="search-overlay" hidden>
+  <div class="search-overlay-inner">
+    <label for="search-input" class="sr-only">Search the site</label>
+    <input type="search" id="search-input" placeholder="Search the site…" autocomplete="off">
+    <button class="search-close" aria-label="Close search">&times;</button>
+    <ul id="search-results" class="search-results"></ul>
+  </div>
+</div>
+
+<main id="main">
+
+  <section class="hero container">
+    <div class="stack reveal" style="max-width: 760px;">
+      <p class="eyebrow">Contact</p>
+      <h1>[Placeholder H1 — how to take the next step]</h1>
+      <p class="lede">[Placeholder subheading — pointing visitors to the right form below.]</p>
+    </div>
+  </section>
+
+  <section id="speaking-enquiry" class="section section-alt">
+    <div class="container" style="max-width: 780px;">
+      <div class="reveal">
+        <p class="eyebrow">For event organisers, HR leaders &amp; bureaus</p>
+        <h2>Book Jo-Dee to Speak</h2>
+        <p class="muted">[Placeholder — one line setting expectations, e.g. response time.]</p>
+      </div>
+      <form class="reveal" style="margin-top: var(--space-lg);" data-placeholder-form data-form-name="Speaking Enquiry">
+        <div class="form-grid two-col">
+          <div class="field">
+            <label for="se-name">Name</label>
+            <input type="text" id="se-name" name="name" required>
+          </div>
+          <div class="field">
+            <label for="se-org">Organisation</label>
+            <input type="text" id="se-org" name="organisation" required>
+          </div>
+          <div class="field">
+            <label for="se-email">Email</label>
+            <input type="email" id="se-email" name="email" required>
+          </div>
+          <div class="field">
+            <label for="se-phone">Phone <span class="hint">(optional)</span></label>
+            <input type="tel" id="se-phone" name="phone">
+          </div>
+          <div class="field">
+            <label for="se-date">Event Date</label>
+            <input type="date" id="se-date" name="event_date">
+          </div>
+          <div class="field">
+            <label for="se-type">Event Type</label>
+            <select id="se-type" name="event_type">
+              <option value="">[Select one]</option>
+              <option value="keynote">Keynote</option>
+              <option value="workshop">Workshop</option>
+              <option value="corporate">Corporate Programme</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="se-size">Approximate Audience Size</label>
+            <input type="text" id="se-size" name="audience_size">
+          </div>
+          <div class="field">
+            <label for="se-location">Event Location</label>
+            <input type="text" id="se-location" name="event_location">
+          </div>
+        </div>
+        <div class="field" style="margin-top: var(--space-md);">
+          <label for="se-message">Tell us about your event</label>
+          <textarea id="se-message" name="message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top: var(--space-md);">Send Speaking Enquiry</button>
+        <p class="form-note" style="margin-top: var(--space-sm);">[Placeholder — this form is not yet connected to a live handler. Wire up to a form service (e.g. Netlify Forms, Formspree) before launch.]</p>
+        <p class="form-success" role="status">[Placeholder confirmation — thank you, we'll be in touch within X business days.]</p>
+      </form>
+    </div>
+  </section>
+
+  <section id="general-enquiry" class="section">
+    <div class="container" style="max-width: 640px;">
+      <div class="reveal">
+        <p class="eyebrow">Everyone else</p>
+        <h2>General Enquiry</h2>
+        <p class="muted">[Placeholder — one line, e.g. media, readers, partnerships.]</p>
+      </div>
+      <form class="reveal" style="margin-top: var(--space-lg);" data-placeholder-form data-form-name="General Enquiry">
+        <div class="form-grid">
+          <div class="field">
+            <label for="ge-name">Name</label>
+            <input type="text" id="ge-name" name="name" required>
+          </div>
+          <div class="field">
+            <label for="ge-email">Email</label>
+            <input type="email" id="ge-email" name="email" required>
+          </div>
+          <div class="field">
+            <label for="ge-message">Message</label>
+            <textarea id="ge-message" name="message" required></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-secondary" style="margin-top: var(--space-md);">Send Message</button>
+        <p class="form-success" role="status">[Placeholder confirmation — thank you message]</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="section section-alt text-center">
+    <div class="container reveal">
+      <p class="eyebrow">Direct</p>
+      <p>[Placeholder email address] &middot; [Placeholder phone, optional] &middot; [Placeholder — based in / timezone]</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <p class="logo">Jo-Dee Walmsley</p>
+      <p class="footer-tagline">Helping people think more clearly, build resilience and perform at their best through The L.A.U.G.H.T.E.R. Method&reg;.</p>
+      <div class="social-links" aria-label="Social media links">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="LinkedIn">LI</a>
+        <a href="#" aria-label="YouTube">YT</a>
+      </div>
+    </div>
+    <nav class="footer-nav" aria-label="Footer">
+      <div class="footer-col">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="speaking.html">Speaking</a></li>
+          <li><a href="laughter-method.html">The Method</a></li>
+          <li><a href="books.html">Books</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="media.html">Media &amp; Press</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2>Connect</h2>
+        <ul>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="contact.html#speaking-enquiry">Book Jo-Dee to Speak</a></li>
+          <li><a href="resources.html">Resources</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2>Legal</h2>
+        <ul>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="footer-newsletter">
+      <h2>Stay in touch</h2>
+      <p>[Placeholder — one line inviting newsletter signup]</p>
+      <form class="newsletter-form" data-placeholder-form data-form-name="Newsletter — Footer">
+        <label for="newsletter-email" class="sr-only">Email address</label>
+        <input type="email" id="newsletter-email" name="email" placeholder="Your email address" required>
+        <button type="submit" class="btn btn-accent">Subscribe</button>
+      </form>
+      <p class="form-success" role="status">[Placeholder confirmation — thank you message]</p>
+    </div>
+  </div>
+  <div class="footer-bottom container">
+    <p>&copy; <span id="year"></span> Jo-Dee Walmsley. All rights reserved.</p>
+    <p>Website framework — placeholder content throughout.</p>
+  </div>
+</footer>
+
+<script src="js/search-data.js" defer></script>
+<script src="js/main.js" defer></script>
+</body>
+</html>

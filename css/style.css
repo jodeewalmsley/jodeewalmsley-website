@@ -1,0 +1,1393 @@
+/* ==========================================================================
+   Jo-Dee Walmsley — Website Framework
+   Design system: Premium, calm, modern, warm, elegant.
+   Palette: Navy / Copper / Cream. Generous white space. Subtle animation only.
+   This stylesheet is shared across every page in the framework.
+   ========================================================================== */
+
+/* -------------------- Reset -------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+/* TASK 82 FIX (8 August 2026, responsive audit): the mobile off-canvas nav
+   (.main-nav, see the 860px breakpoint below) is positioned with
+   `transform: translateX(100%)` to sit off-screen until opened. Transformed
+   elements contribute to the page's scrollable overflow area even when
+   visually off-screen, which was silently making every page horizontally
+   scrollable by exactly the nav's own width (320px) on any viewport ≤ 860px
+   — invisible in a static screenshot, but a real WCAG 1.4.10 (Reflow) issue
+   and a genuine risk of a stray horizontal swipe revealing blank space.
+   `overflow-x: hidden` on the document root is the standard, zero-visual-
+   impact fix for this exact pattern. No layout, spacing or design changed. */
+html { overflow-x: hidden; }
+body { overflow-x: hidden; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+body, h1, h2, h3, h4, p, figure, blockquote, dl, dd { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+img, svg { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; background: none; border: none; color: inherit; }
+input, textarea, select { font: inherit; color: inherit; }
+
+/* -------------------- Design tokens -------------------- */
+:root {
+  /* Brand palette */
+  --navy-900: #0F1F38;
+  --navy-800: #17294A;
+  --navy-700: #22375E;
+  --copper-700: #96572E; /* text-safe copper — meets WCAG AA (4.5:1+) on cream/white */
+  --copper-600: #A9673F;
+  --copper-500: #C17F59;
+  --copper-300: #DDA57F;
+  --copper-100: #F1DCC9;
+  --cream-100: #FAF6EF;
+  --cream-200: #F3ECE0;
+  --cream-300: #EAE0CF;
+  --charcoal: #2A2A28;
+  --white: #FFFFFF;
+
+  /* Semantic roles */
+  --color-bg: var(--cream-100);
+  --color-bg-alt: var(--cream-200);
+  --color-text: var(--charcoal);
+  --color-heading: var(--navy-900);
+  --color-accent: var(--copper-500);
+  --color-accent-dark: var(--copper-700);
+  --color-inverse-bg: var(--navy-900);
+  --color-inverse-text: var(--cream-100);
+  --color-border: rgba(15, 31, 56, 0.12);
+  --color-focus: var(--copper-600);
+
+  /* Type */
+  --font-heading: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Spacing scale */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.75rem;
+  --space-lg: 3rem;
+  --space-xl: 5rem;
+  --space-2xl: 8rem;
+
+  /* Layout */
+  --container-width: 1200px;
+  --radius: 6px;
+  --shadow-soft: 0 8px 30px rgba(15, 31, 56, 0.08);
+  --transition-base: 220ms ease;
+}
+
+/* -------------------- Base typography -------------------- */
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--color-heading);
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: clamp(2.25rem, 4vw + 1rem, 3.75rem); font-weight: 600; }
+h2 { font-size: clamp(1.75rem, 2.5vw + 1rem, 2.5rem); }
+h3 { font-size: clamp(1.25rem, 1.2vw + 1rem, 1.5rem); }
+h4 { font-size: 1.125rem; }
+
+p { max-width: 62ch; }
+p.lede { font-size: 1.2rem; color: var(--navy-700); max-width: 55ch; }
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent-dark);
+  margin-bottom: var(--space-xs);
+}
+
+/* -------------------- Layout helpers -------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+.section { padding-block: var(--space-2xl); }
+.section-sm { padding-block: var(--space-xl); }
+.section-alt { background: var(--color-bg-alt); }
+.section-inverse { background: var(--color-inverse-bg); color: var(--color-inverse-text); }
+.section-inverse h1, .section-inverse h2, .section-inverse h3 { color: var(--color-inverse-text); }
+
+.grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+.grid-2 { grid-template-columns: repeat(1, 1fr); }
+.grid-3 { grid-template-columns: repeat(1, 1fr); }
+.grid-4 { grid-template-columns: repeat(1, 1fr); }
+
+@media (min-width: 640px) {
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 900px) {
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Speaking Highlights grid: 1 col mobile / 3 col tablet / 5 col desktop, per spec. */
+.grid-highlights {
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: repeat(1, 1fr);
+}
+@media (min-width: 640px) {
+  .grid-highlights { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1100px) {
+  .grid-highlights { grid-template-columns: repeat(5, 1fr); gap: var(--space-sm); }
+}
+
+.stack { display: flex; flex-direction: column; gap: var(--space-sm); }
+.cluster { display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; }
+.text-center { text-align: center; }
+.mx-auto { margin-inline: auto; }
+
+/* -------------------- Skip link -------------------- */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  background: var(--navy-900);
+  color: var(--cream-100);
+  padding: 0.75rem 1.25rem;
+  z-index: 1000;
+  border-radius: var(--radius);
+}
+.skip-link:focus {
+  left: var(--space-sm);
+  top: var(--space-sm);
+}
+
+/* -------------------- Focus states -------------------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* -------------------- Buttons -------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  transition: transform var(--transition-base), background var(--transition-base), box-shadow var(--transition-base);
+  min-height: 44px;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-primary {
+  background: var(--navy-900);
+  color: var(--cream-100);
+  box-shadow: var(--shadow-soft);
+}
+.btn-primary:hover { background: var(--navy-800); }
+.btn-secondary {
+  background: transparent;
+  color: var(--navy-900);
+  border: 1.5px solid var(--navy-900);
+}
+.btn-secondary:hover { background: var(--navy-900); color: var(--cream-100); }
+.btn-accent {
+  background: var(--color-accent);
+  color: var(--navy-900);
+}
+.btn-accent:hover { background: var(--copper-600); color: var(--cream-100); }
+.btn-ghost-inverse {
+  border: 1.5px solid rgba(250, 246, 239, 0.5);
+  color: var(--cream-100);
+}
+.btn-ghost-inverse:hover { background: rgba(250, 246, 239, 0.12); }
+.btn-block { width: 100%; }
+
+/* -------------------- Header / Navigation -------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  background: rgba(250, 246, 239, 0.92);
+  backdrop-filter: saturate(160%) blur(8px);
+  border-bottom: 1px solid var(--color-border);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--space-sm);
+  gap: var(--space-md);
+}
+.logo {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--navy-900);
+  white-space: nowrap;
+}
+.logo-tag {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--copper-600);
+  /* TASK 82 FIX (8 August 2026, responsive audit): .logo has white-space:
+     nowrap for its own single-line wordmark, but that inherited into this
+     child tagline too, silently running it ~100px past the edge of the
+     screen on every phone width with no way to ever read the full line.
+     Restoring normal wrapping here only affects this element; the parent
+     wordmark itself is untouched and still never wraps. */
+  white-space: normal;
+}
+
+.main-nav { display: flex; align-items: center; }
+.nav-list {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+}
+.nav-list a {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--navy-800);
+  position: relative;
+  padding-block: 0.25rem;
+}
+.nav-list a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -4px;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-base);
+}
+.nav-list a:hover::after,
+.nav-list a[aria-current="page"]::after { transform: scaleX(1); }
+.nav-list a[aria-current="page"] { color: var(--copper-700); }
+
+.header-actions { display: flex; align-items: center; gap: var(--space-sm); }
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  color: var(--navy-900);
+  transition: background var(--transition-base);
+}
+.icon-btn:hover { background: var(--cream-300); }
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  width: 44px; height: 44px;
+  align-items: center;
+  justify-content: center;
+}
+.nav-toggle span {
+  display: block;
+  width: 22px; height: 2px;
+  background: var(--navy-900);
+  transition: transform var(--transition-base), opacity var(--transition-base);
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 860px) {
+  .nav-toggle { display: inline-flex; }
+  .main-nav {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: min(320px, 85vw);
+    background: var(--cream-100);
+    box-shadow: -12px 0 40px rgba(15,31,56,0.15);
+    transform: translateX(100%);
+    transition: transform var(--transition-base);
+    padding: var(--space-2xl) var(--space-lg);
+  }
+  .main-nav.is-open { transform: translateX(0); }
+  .nav-list { flex-direction: column; align-items: flex-start; gap: var(--space-md); }
+  .nav-list a { font-size: 1.15rem; }
+}
+
+/* -------------------- Search overlay -------------------- */
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 31, 56, 0.85);
+  z-index: 900;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12vh;
+}
+.search-overlay[hidden] { display: none; }
+.search-overlay-inner {
+  background: var(--cream-100);
+  width: min(640px, 92vw);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+}
+#search-input {
+  width: 100%;
+  font-size: 1.15rem;
+  padding: 0.9rem 3rem 0.9rem 1rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--white);
+}
+.search-close {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  font-size: 1.5rem;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+}
+.search-close:hover { background: var(--cream-300); }
+.search-results { margin-top: var(--space-md); display: flex; flex-direction: column; gap: 0.25rem; max-height: 50vh; overflow-y: auto; }
+.search-results li a {
+  display: block;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius);
+}
+.search-results li a:hover,
+.search-results li a:focus-visible { background: var(--cream-300); }
+.search-result-title { font-weight: 600; color: var(--navy-900); }
+.search-result-meta { display: block; font-size: 0.85rem; color: var(--navy-700); }
+.search-empty { color: var(--navy-700); padding-top: var(--space-sm); }
+
+/* -------------------- Hero -------------------- */
+.hero {
+  padding-block: var(--space-2xl) var(--space-xl);
+}
+.hero-grid {
+  display: grid;
+  gap: var(--space-lg);
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .hero-grid { grid-template-columns: 1.1fr 0.9fr; gap: var(--space-2xl); }
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-md); }
+.hero-media { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-soft); }
+
+/* Speaking-page-only hero modifier: gives the audience photo a larger share of the hero
+   so the room and crowd read clearly at a glance. Scoped to .hero--speaking so every other
+   page's hero (Home, About, etc.) is unaffected.
+   2026-07-24: 1.1fr/0.9fr (site default) -> 0.7fr/1.3fr (first enlargement, +44% image width)
+   2026-07-24: 0.7fr/1.3fr -> 0.55fr/1.45fr (+~12% image width on top of that)
+   2026-07-24: 0.55fr/1.45fr -> 0.54fr/1.46fr, gap 8rem -> 5rem (existing spacing token, reused
+   rather than inventing a new value) -> +~5% image width again. The gap reduction (not the
+   fr ratio) does almost all of the work here, so the text column stays effectively the same
+   width (~295px -> ~302px) and the headline/paragraph wrap exactly as before. Aspect ratio of
+   the photo itself is still untouched, so nothing new is cropped. */
+@media (min-width: 900px) {
+  .hero--speaking .hero-grid { grid-template-columns: 0.54fr 1.46fr; gap: var(--space-xl); }
+}
+
+/* -------------------- Cards -------------------- */
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
+.card-icon { color: var(--color-accent-dark); margin-bottom: var(--space-sm); }
+.card h3 { margin-bottom: 0.5rem; }
+.card p { font-size: 0.95rem; }
+.card-link { display: inline-block; margin-top: var(--space-sm); font-weight: 600; color: var(--copper-600); }
+/* Scoped to the Home page "Maybe This Sounds Familiar" cards only (per Jo-Dee's 2026-07-25
+   refinement request) — a little extra bottom padding, without touching the shared .card
+   rule used by every other card on the site. */
+.card--familiar { padding-bottom: calc(var(--space-md) + 0.75rem); }
+.card-link:hover { text-decoration: underline; }
+
+/* -------------------- Photo gallery (real event photography) -------------------- */
+.photo-feature {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  background: var(--white);
+}
+.photo-feature img {
+  width: 100%;
+  height: auto;
+  max-height: 560px;
+  object-fit: cover;
+  display: block;
+}
+.photo-feature figcaption {
+  padding: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+.photo-caption-title {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--navy-900);
+  margin-bottom: 0.25rem;
+}
+.photo-caption-text { font-size: 0.9rem; color: var(--navy-700); }
+
+.photo-gallery-item {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+.photo-gallery-item img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--transition-base);
+}
+.photo-gallery-item:hover img { transform: scale(1.03); }
+
+/* -------------------- Speaking Highlights cards -------------------- */
+/* Reuses .card (padding, border, background, shadow-on-hover lift) so styling matches the
+   rest of the site exactly. Only the photo treatment is new here.
+   2026-07-24: photo aspect-ratio 3/2 -> 4/3 (+~12% taller within the same card width) to make
+   the photo the visual focus; the image-to-caption margin was trimmed (space-sm -> space-xs)
+   to absorb that extra height so the overall card doesn't grow. */
+.highlight-photo-btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0 0 var(--space-xs);
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.highlight-photo-btn img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius);
+  display: block;
+}
+.highlight-card h3 { font-size: 1rem; margin-bottom: 0.35rem; }
+.highlight-card p { font-size: 0.88rem; }
+
+/* -------------------- Lightbox -------------------- */
+/* Mirrors .search-overlay so the interaction pattern and visual language match the rest
+   of the site exactly (same backdrop, same card treatment, same close-button style). */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 31, 56, 0.85);
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+}
+.lightbox-overlay[hidden] { display: none; }
+.lightbox-inner {
+  background: var(--cream-100);
+  width: min(880px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+}
+.lightbox-inner img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  display: block;
+}
+.lightbox-caption { margin-top: var(--space-sm); }
+.lightbox-caption h3 { margin-bottom: 0.35rem; }
+.lightbox-caption p { font-size: 0.9rem; color: var(--navy-700); max-width: none; }
+.lightbox-close {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  font-size: 1.5rem;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--cream-100);
+}
+.lightbox-close:hover { background: var(--cream-300); }
+
+/* -------------------- Video embed (Experience Jo-Dee Speaking) -------------------- */
+/* Responsive 16:9 frame for the embedded YouTube player. Built from existing tokens only
+   (radius, shadow) so it matches the rest of the site — same visual treatment as .hero-media
+   and .photo-feature elsewhere on this page. */
+.video-frame {
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  background: var(--navy-900);
+}
+.video-frame iframe { width: 100%; height: 100%; display: block; border: 0; }
+
+/* -------------------- Trusted By logo strip -------------------- */
+/* Deliberately not built on .card — no border, no background box, no shadow. Explicit column
+   counts per breakpoint (2 mobile / 4 tablet / 6 desktop) per spec — still wraps naturally at
+   any logo count (20-40+), so slots can be added or removed later with no other markup or
+   breakpoint changes needed. Each slot is a fixed-height flex box using object-fit:contain,
+   so every logo reads at a consistent visual height regardless of its native aspect ratio,
+   without ever stretching or distorting it. */
+.trusted-by-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+}
+@media (min-width: 640px) {
+  .trusted-by-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (min-width: 1100px) {
+  .trusted-by-grid { grid-template-columns: repeat(6, 1fr); }
+}
+/* Compact variant — used for the small Home page teaser (8 logos). Caps the desktop column
+   count at 4 instead of 6 so a short logo set forms two even rows rather than a lopsided
+   6-then-2. Must appear after the base 1100px rule above so it wins the cascade. */
+@media (min-width: 1100px) {
+  .trusted-by-grid--compact { grid-template-columns: repeat(4, 1fr); }
+}
+/* Compact variant is also centred and width-capped (rather than stretching the full container),
+   its logo slots are a different size than the full Speaking-page wall, and its logo gap is
+   very slightly wider — all scoped to .trusted-by-grid--compact so the Speaking page's 29-logo
+   wall is completely unaffected. */
+.trusted-by-grid--compact {
+  max-width: 900px;
+  margin-inline: auto;
+  gap: 3.5rem;
+}
+.trusted-by-grid--compact .trusted-by-logo { height: 66px; }
+/* Centres the "View Speaking Experience" button under the middle of the (900px, centred)
+   compact grid above it, rather than the full-width container — so it lines up with the grid's
+   true centre rather than the wider page centre. */
+.trusted-by-teaser-cta { max-width: 900px; margin-inline: auto; }
+/* Home page teaser section only — a shorter padding-block than the shared .section-sm class
+   (used elsewhere, e.g. blog.html) so this smaller 8-logo section doesn't carry as much
+   vertical whitespace as a full section. */
+.trusted-by-teaser { padding-block: var(--space-lg); }
+.trusted-by-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  transition: transform var(--transition-base);
+}
+/* BUG FIX 2026-07-25 (revised — first attempt below was disproven by real reproduction):
+   logos rendered oversized on initial load/refresh, correcting only after a reflow-triggering
+   event (hover, scroll-reveal, etc.). The first fix (min-width/min-height: 0, still in the
+   comment history of this file's previous version) addressed the flex auto-min-size default,
+   which was a real contributing factor but not sufficient on its own to close the bug in testing.
+   The remaining, more fundamental cause: sizing the image via `width:auto;height:auto` plus
+   `max-width/max-height:100%` makes the browser's layout box depend on the image's own
+   intrinsic/natural size and how percentages resolve against it — a calculation that can be
+   revisited (and only settle correctly) on a later reflow rather than the first layout pass,
+   particularly for lazy-loaded images whose intrinsic size isn't confirmed until decode
+   completes. Switching to definite `width:100%;height:100%` removes that dependency entirely:
+   the box is a fixed percentage of the already-fixed-height flex item regardless of the image's
+   own size or load state, and `object-fit: contain` only positions pixels inside that box at
+   paint time. `loading="lazy"` was also removed from these logos (see index.html/speaking.html)
+   since deferred decode was the other plausible source of a late, reflow-dependent resize, and
+   the combined logo set is ~1.2MB — trivial to load eagerly. */
+.trusted-by-logo img {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  object-fit: contain;
+  display: block;
+}
+.trusted-by-logo:hover { transform: scale(1.06); }
+
+.card-disabled {
+  opacity: 0.6;
+  border-style: dashed;
+}
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--copper-100);
+  color: var(--navy-900);
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+}
+
+/* -------------------- Testimonials -------------------- */
+.testimonial {
+  background: var(--white);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius);
+  padding: var(--space-md) var(--space-lg);
+}
+.testimonial blockquote { font-family: var(--font-heading); font-size: 1.15rem; color: var(--navy-900); }
+.testimonial cite { display: block; margin-top: var(--space-sm); font-style: normal; font-size: 0.9rem; color: var(--navy-700); }
+
+/* -------------------- Logo strip -------------------- */
+.logo-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  align-items: center;
+  justify-content: center;
+  opacity: 0.75;
+}
+.logo-strip img, .logo-strip svg { max-height: 36px; width: auto; }
+/* Media page only: text-based "as featured in" wordmarks, used instead of scanned/photographed
+   logo crops (no official brand logo files exist for these outlets, and mixing inconsistent
+   photo-quality logos would look like a scrapbook rather than a clean press strip). Sits inside
+   the same .logo-strip flex row as image-based logos elsewhere on the site. */
+.logo-strip-text {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--navy-800);
+  letter-spacing: 0.01em;
+}
+.logo-strip-text--pending { opacity: 0.55; font-style: italic; }
+
+/* -------------------- Press / Media cards (media.html) -------------------- */
+.press-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-base);
+}
+.press-card:hover { transform: translateY(-4px); }
+.press-card-thumb { width: 100%; height: 200px; object-fit: cover; display: block; }
+.press-card-thumb-placeholder {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream-200);
+  color: var(--navy-700);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-style: italic;
+}
+.press-card-body { padding: var(--space-md); display: flex; flex-direction: column; gap: 0.35rem; }
+.press-card-pub {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent-dark);
+}
+.press-card-date { font-size: 0.85rem; color: var(--navy-700); margin-bottom: 0.25rem; }
+.press-card-pending { opacity: 0.65; border-style: dashed; box-shadow: none; }
+
+/* -------------------- Forms -------------------- */
+.form-grid { display: grid; gap: var(--space-md); }
+@media (min-width: 640px) {
+  .form-grid.two-col { grid-template-columns: 1fr 1fr; }
+}
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+.field label { font-weight: 600; font-size: 0.9rem; color: var(--navy-800); }
+.field .hint { font-size: 0.8rem; color: var(--navy-700); font-weight: 400; }
+.field input,
+.field select,
+.field textarea {
+  padding: 0.75rem 0.9rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--white);
+  min-height: 44px;
+}
+.field textarea { min-height: 120px; resize: vertical; }
+.field input:required, .field select:required, .field textarea:required { box-shadow: none; }
+.form-note { font-size: 0.85rem; color: var(--navy-700); }
+.form-success {
+  background: var(--copper-100);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  color: var(--navy-900);
+  display: none;
+}
+.form-success.is-visible { display: block; }
+
+/* -------------------- Newsletter -------------------- */
+.newsletter-form { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.newsletter-form input { flex: 1 1 200px; padding: 0.75rem 0.9rem; border-radius: var(--radius); border: 1.5px solid var(--color-border); min-height: 44px; }
+
+/* -------------------- Footer -------------------- */
+.site-footer {
+  background: var(--navy-900);
+  color: var(--cream-100);
+  padding-block: var(--space-xl) var(--space-md);
+}
+.footer-inner {
+  display: grid;
+  gap: var(--space-lg);
+}
+@media (min-width: 900px) {
+  .footer-inner { grid-template-columns: 1.2fr 2fr 1.2fr; }
+}
+.footer-brand .logo { color: var(--cream-100); }
+.footer-tagline { color: var(--cream-300); margin-top: var(--space-xs); font-size: 0.95rem; }
+.social-links { display: flex; gap: var(--space-sm); margin-top: var(--space-md); }
+.social-links a {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid rgba(250,246,239,0.3);
+  font-size: 0.75rem;
+}
+.social-links a:hover { background: rgba(250,246,239,0.12); }
+
+/* TASK 82 FIX (8 August 2026, responsive audit): footer links measured at
+   only ~17px tall on mobile — below the WCAG 2.2 SC 2.5.8 (AA) 24px tap-
+   target minimum. `padding-block` on these inline links enlarges the real
+   clickable area without shifting any visible text position or spacing. */
+.footer-nav { display: grid; gap: var(--space-lg); grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 500px) { .footer-nav { grid-template-columns: repeat(3, 1fr); } }
+.footer-col h2 { font-family: var(--font-body); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--copper-300); margin-bottom: var(--space-sm); }
+.footer-col ul { display: flex; flex-direction: column; gap: 0.6rem; }
+.footer-col a { color: var(--cream-200); font-size: 0.95rem; padding-block: 0.35rem; }
+.footer-col a:hover { color: var(--white); text-decoration: underline; }
+
+.footer-newsletter h2 { font-family: var(--font-body); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--copper-300); margin-bottom: var(--space-sm); }
+.footer-newsletter p { color: var(--cream-300); font-size: 0.9rem; margin-bottom: var(--space-sm); }
+.footer-newsletter input::placeholder { color: var(--navy-700); }
+
+.footer-bottom {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(250,246,239,0.15);
+  display: flex; flex-wrap: wrap; gap: var(--space-sm); justify-content: space-between;
+  font-size: 0.85rem; color: var(--cream-300);
+}
+.footer-bottom a { color: var(--cream-300); padding-block: 0.35rem; }
+.footer-bottom a:hover { color: var(--white); }
+
+/* -------------------- Scroll-reveal animation -------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 700ms ease, transform 700ms ease;
+}
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+/* -------------------- Filter / tag pills (blog) -------------------- */
+.filter-pills { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.filter-pill {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--color-border);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.filter-pill[aria-pressed="true"] { background: var(--navy-900); color: var(--cream-100); border-color: var(--navy-900); }
+
+/* -------------------- Official Brand Colour System — Version 1.0 -------------------- */
+/* Sampled 26 July 2026 directly from Jo-Dee's official L.A.U.G.H.T.E.R. Method® artwork
+   (4 files: "laughter method logo.png", "jw and LM.png", the two "ChatGPT Image..." files —
+   filed in Website Assets/Brand Assets/Colours/, see the note in that folder). Each pillar
+   colour below is the average of two independent pixel samples per pillar (the icon-circle
+   fill and the large letter glyph) from the clearest source image, cross-checked against a
+   second artwork file. This — not the temporary palette from the first pass — is the single
+   source of truth going forward. Do not hand-edit these hex values without re-sampling from
+   the source artwork; if the brand palette ever changes, update it there first.
+
+   Every colour is also available as a "-text" variant for use as actual text (pillar name,
+   links): where the official colour already meets 4.5:1 contrast against white and the site's
+   cream background (WCAG AA), the text variant equals the official colour. Where it doesn't
+   (love, awareness, resilience — all light/warm colours), the text variant is the same hue
+   darkened just enough to pass AA — a derived accessibility shade, not a different "official"
+   colour. Decorative uses (icon fills, top borders, hover glow) always use the base colour.
+
+   FLAGGED FOR JO-DEE: the sampled Primary Navy (#002958) and Primary Gold (#E89E10) are
+   noticeably richer/darker than this site's existing --navy-900 (#0F1F38) and --copper-500
+   (#C17F59), which are already used across the locked Home/About/Speaking/Media pages. Rather
+   than silently change those site-wide (which would alter every already-approved page), the
+   new official tokens live alongside the old ones. See "Questions for Jo-Dee" in the Production
+   Dashboard for the decision this needs. */
+:root {
+  /* Primary brand colours */
+  --colour-primary-navy: #002958;       --colour-primary-navy-rgb: 0,41,88;
+  --colour-primary-gold: #E89E10;       --colour-primary-gold-text: #986606; --colour-primary-gold-rgb: 232,158,16;
+
+  /* Pillar colours */
+  /* --pillar-awareness, renamed 6 August 2026 from --pillar-actualisation (same hex values,
+     unchanged — this is the sampled official brand colour for letter A, not a new choice).
+     Jo-Dee redefined Pillar A from "Actualisation of Self" to "Awareness & Acceptance" — an
+     intentional evolution of the methodology, not a rewrite. Renamed here, and everywhere else
+     the old slug appeared, so the token name matches what the pillar is actually called going
+     forward. See Production Dashboard.md change log for the full list of files touched. */
+  --pillar-love:          #E59408; --pillar-love-text:          #9D6401; --pillar-love-rgb:          229,148,8;
+  --pillar-awareness:     #E05D13; --pillar-awareness-text:     #BF4C0B; --pillar-awareness-rgb:     224,93,19;
+  --pillar-unpack:        #BE1A54; --pillar-unpack-text:        #BE1A54; --pillar-unpack-rgb:        190,26,84;
+  --pillar-gratitude:     #563676; --pillar-gratitude-text:     #563676; --pillar-gratitude-rgb:     86,54,118;
+  --pillar-happiness:     #093C78; --pillar-happiness-text:     #093C78; --pillar-happiness-rgb:     9,60,120;
+  --pillar-thoughts:      #0A6C90; --pillar-thoughts-text:      #0A6C90; --pillar-thoughts-rgb:      10,108,144;
+  --pillar-esteem:        #607E3E; --pillar-esteem-text:        #607E3E; --pillar-esteem-rgb:        96,126,62;
+  --pillar-resilience:    #EAA226; --pillar-resilience-text:    #9A660A; --pillar-resilience-rgb:    234,162,38;
+
+  /* Supporting design tokens — background/text/border roles alias the site's existing,
+     already-approved neutrals rather than resampling new ones; these are generic UI roles,
+     not part of the brand-colour artwork. background-cream is the site's pre-existing warm
+     white (--cream-100), kept as-is: the artwork's own background is plain white, not a
+     distinct cream, so there was nothing to sample there. */
+  --background-white: #FFFFFF;
+  --background-cream: var(--cream-100);
+  --text-primary: var(--charcoal);
+  --text-secondary: var(--navy-700);
+  --border-light: var(--color-border);
+}
+
+/* Note, 5 August 2026: the "Garden World hand-crafted sign & stone palette" token block that
+   used to live here (--wood-oak/cedar/lavender/blue/sage/rose/timber, --stone-sand/grey/slate)
+   has been removed. It existed only to feed the CSS-generated .garden-sign component below,
+   which Jo-Dee asked to be removed entirely in favour of real illustrated brand assets — see
+   the change log and "Garden World Illustrated Asset Library.md". Nothing else on the site read
+   these tokens, so removing them has no effect anywhere else. */
+
+.pillars-intro-note {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--copper-700);
+  margin-top: var(--space-sm);
+}
+
+.pillars-grid {
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: repeat(1, 1fr);
+}
+@media (min-width: 640px) { .pillars-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .pillars-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.pillar-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--pillar-accent);
+  padding: var(--space-md);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+.pillar-card:hover,
+.pillar-card:focus-within {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 40px -22px rgba(var(--pillar-rgb), 0.55), var(--shadow-soft);
+}
+.pillar-card-letter {
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  line-height: 1;
+  color: var(--pillar-text);
+  margin-bottom: var(--space-xs);
+}
+.pillar-card-title { margin-bottom: 0.5rem; }
+.pillar-card-headline {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--navy-800);
+  margin-bottom: var(--space-sm);
+}
+.pillar-card-body { font-size: 0.92rem; flex-grow: 1; }
+.pillar-card-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: var(--space-md);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--pillar-text);
+}
+.pillar-card-link .arrow { display: inline-block; transition: transform var(--transition-base); }
+.pillar-card:hover .pillar-card-link .arrow,
+.pillar-card:focus-within .pillar-card-link .arrow { transform: translateX(4px); }
+/* Stretched-link pattern: makes the whole card clickable while keeping a single, clearly
+   labelled link in the accessibility tree (rather than nesting the heading/paragraphs inside
+   the <a>, which would make screen readers announce the entire card as one link). */
+.pillar-card-link::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius); }
+
+.pillar-card--love          { --pillar-accent: var(--pillar-love);          --pillar-text: var(--pillar-love-text);          --pillar-rgb: var(--pillar-love-rgb); }
+.pillar-card--awareness     { --pillar-accent: var(--pillar-awareness);     --pillar-text: var(--pillar-awareness-text);     --pillar-rgb: var(--pillar-awareness-rgb); }
+.pillar-card--unpack        { --pillar-accent: var(--pillar-unpack);        --pillar-text: var(--pillar-unpack-text);        --pillar-rgb: var(--pillar-unpack-rgb); }
+.pillar-card--gratitude     { --pillar-accent: var(--pillar-gratitude);     --pillar-text: var(--pillar-gratitude-text);     --pillar-rgb: var(--pillar-gratitude-rgb); }
+.pillar-card--happiness     { --pillar-accent: var(--pillar-happiness);     --pillar-text: var(--pillar-happiness-text);     --pillar-rgb: var(--pillar-happiness-rgb); }
+.pillar-card--thoughts      { --pillar-accent: var(--pillar-thoughts);      --pillar-text: var(--pillar-thoughts-text);      --pillar-rgb: var(--pillar-thoughts-rgb); }
+.pillar-card--esteem        { --pillar-accent: var(--pillar-esteem);        --pillar-text: var(--pillar-esteem-text);        --pillar-rgb: var(--pillar-esteem-rgb); }
+.pillar-card--resilience    { --pillar-accent: var(--pillar-resilience);    --pillar-text: var(--pillar-resilience-text);    --pillar-rgb: var(--pillar-resilience-rgb); }
+
+/* -------------------- Pillar page template (new, additive — not yet used on a live page) --------------------
+   Supports templates/pillar-page-template.html. Reads the same --pillar-accent/--pillar-text
+   custom properties already set by .pillar-card--love etc. above, set instead on <body> so a
+   whole page — not just a card — can be tinted per-pillar without 8 separate stylesheets. */
+.pillar-breadcrumb { font-size: 0.85rem; color: var(--navy-700); margin-bottom: var(--space-sm); }
+.pillar-breadcrumb a { color: var(--navy-700); }
+.pillar-hero { padding-block: var(--space-2xl) var(--space-xl); }
+
+/* Hero — page-scoped to the Awareness & Acceptance pillar only. Deliberately a new, separate
+   component rather than a modification of the shared .pillar-hero/.hero-grid/.hero-media
+   pattern used by every other pillar page, so Resilience, Love and the template are completely
+   unaffected.
+
+   VERSION 4 (6 August 2026) — LOCKED MASTER ARTWORK. Jo-Dee approved a finished, flattened hero
+   image (images/awareness-hero-master.png, heading/lede/caption text baked into the artwork
+   itself) and locked it: "treat it like a logo or brand asset." Every earlier version of this
+   component (real photograph, gradient scrim, brightness masking, art-direction refinement —
+   see the change log in Production Dashboard.md for that whole history) is superseded. This
+   is now the simplest the component has been: no scrim, no fade, no filters, no live text over
+   the image, nothing that touches or compensates for the artwork — it is presented exactly as
+   supplied. Do not reintroduce any image effect here; if the artwork ever needs to change,
+   that's a new master file from Jo-Dee, not a reprocessing pass.
+   Sizing: the frame is inset to 93% width (~7% smaller than edge-to-edge) purely for breathing
+   room, exactly matching the artwork's own 3:2 aspect ratio so object-fit:contain never has to
+   crop or letterbox anything — every pixel of the approved artwork is always fully visible. */
+.pillar-hero-photo { padding-block: 0 var(--space-2xl); }
+.pillar-hero-photo-frame {
+  width: 93%;
+  max-width: 1600px;
+  margin-inline: auto;
+  aspect-ratio: 3 / 2; /* matches images/awareness-hero-master.png exactly (1536×1024) */
+}
+.pillar-hero-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.reflection-block {
+  border-left: 3px solid var(--pillar-accent, var(--color-accent));
+  background: var(--cream-100);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  max-width: 65ch;
+  margin-inline: auto;
+  text-align: center;
+}
+.reflection-eyebrow { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--navy-700); margin-bottom: var(--space-sm); }
+.reflection-prompt { font-family: var(--font-heading); font-size: 1.3rem; color: var(--navy-900); }
+
+.pillar-mini-nav { display: flex; flex-wrap: wrap; gap: var(--space-sm); justify-content: center; margin-top: var(--space-md); }
+.pillar-mini-nav-link {
+  border: 1.5px solid var(--pillar-accent, var(--color-border));
+  color: var(--pillar-text, var(--navy-800));
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.pillar-mini-nav-link:hover,
+.pillar-mini-nav-link:focus-visible {
+  /* Uses --pillar-text (the darkened, contrast-verified variant), not --pillar-accent,
+     as the fill here — checked 27 July 2026 while building the Resilience page: white
+     text directly on the base accent colour fails WCAG AA for Love, Awareness,
+     Resilience and Gold (as low as 2.17:1). --pillar-text is dark enough for every
+     pillar to keep white text at 4.5:1+ in this hover/focus state. */
+  background: var(--pillar-text, var(--navy-800));
+  color: var(--white);
+}
+
+/* -------------------- Heart Garden Explore (Love pillar page, 5 August 2026) --------------------
+   Replaces both the earlier CSS-gradient "garden-sign" experiment (three refinement passes, then
+   removed) and the illustrated-PNG-asset placeholder that briefly replaced it. Jo-Dee's brief this
+   time: stop trying to make 11 identical objects individually realistic, and instead give the
+   section itself an explorable, wandering-through-a-garden feel — different KINDS of garden
+   object (stones for what's permanent, signs for places you visit, flowers for what grows, a
+   watering can for self-care, a bench for pause/receiving), laid out with organic variation
+   instead of a grid, and revealed on click/hover rather than all shown at once. Built as small,
+   simple, hand-drawn SVG line-art (a deliberately different technique to the earlier photorealism
+   attempts — elegant flat illustration, not simulated wood/stone texture), defined once as a
+   sprite sheet of <symbol> icons and referenced by <use> from each item, so the markup stays
+   light. Interaction uses native <details>/<summary> — no JavaScript, full keyboard support and
+   screen-reader semantics for free, exactly the kind of "simplest implementation" this component
+   needed. Every background/text colour pairing below is contrast-checked at 4.5:1+ (WCAG AA); see
+   change log for the exact ratios. */
+
+:root {
+  --garden-stone-a: #B7AB92; --garden-stone-b: #A89C86; --garden-stone-c: #C3B79E;
+  --garden-sign-a: #86593B;  --garden-sign-b: #754A35;  --garden-sign-c: #7E5D3E;
+  --garden-sign-d: #6B4A36;  --garden-sign-e: #8A5F3A;
+  --garden-bench: #6E5A42;
+  --garden-can: #5F6C51;
+  --garden-flower-wash: #F1E1E6;
+}
+
+.heart-garden-explore {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: var(--space-xl) var(--space-md);
+  margin-top: var(--space-xl);
+  justify-items: center;
+}
+@media (min-width: 700px) {
+  .garden-object--can, .garden-object--bench { grid-column: span 2; }
+}
+
+.garden-object { margin: 0; }
+.garden-object > summary {
+  cursor: pointer;
+  list-style: none;
+  text-align: center;
+  padding: var(--space-xs);
+  transform: rotate(var(--tilt, 0deg)) translateY(var(--offset-y, 0px));
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+.garden-object > summary::-webkit-details-marker { display: none; }
+.garden-object > summary:hover,
+.garden-object > summary:focus-visible {
+  transform: rotate(var(--tilt, 0deg)) translateY(calc(var(--offset-y, 0px) - 5px)) scale(1.05);
+  filter: drop-shadow(0 16px 22px rgba(20, 20, 15, 0.2));
+}
+.garden-object > summary:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 4px; border-radius: 6px; }
+
+.garden-object-frame { position: relative; width: 110px; height: 88px; margin: 0 auto; }
+.garden-object--can .garden-object-frame,
+.garden-object--bench .garden-object-frame { width: 150px; }
+.garden-object-icon { width: 100%; height: 100%; display: block; filter: drop-shadow(0 8px 12px rgba(20, 20, 15, 0.16)); }
+
+.garden-object-label {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.92rem;
+  margin: 0;
+}
+/* Stone and sign labels sit engraved/painted directly on the object; flower, can and bench
+   labels sit as a small caption underneath, since those shapes have no flat surface for text. */
+.garden-object--stone .garden-object-label,
+.garden-object--sign .garden-object-label {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  padding: 0 var(--space-sm);
+}
+.garden-object--stone .garden-object-label { color: var(--charcoal); letter-spacing: 0.02em; text-shadow: 0 1px 0 rgba(255,255,255,0.5), 0 -1px 0 rgba(0,0,0,0.18); }
+.garden-object--sign .garden-object-label { color: var(--cream-100); text-shadow: 0 1px 3px rgba(0,0,0,0.35); }
+.garden-object--flower .garden-object-label,
+.garden-object--can .garden-object-label,
+.garden-object--bench .garden-object-label { color: var(--navy-800); margin-top: var(--space-xs); }
+
+.garden-object-detail { max-width: 26ch; margin: var(--space-xs) auto 0; }
+.garden-object-detail p { font-size: 0.9rem; color: var(--navy-700); margin: 0; }
+.garden-object[open] .garden-object-detail { animation: garden-reveal 0.35s ease; }
+@keyframes garden-reveal { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .garden-object[open] .garden-object-detail { animation: none; }
+  .garden-object > summary { transition: none; }
+}
+
+/* Small, low-key "just enough to feel alive" touches — a flower flourish under the section
+   heading, a butterfly and a ladybird beneath the grid. Decorative only: aria-hidden, no
+   accessible text, never touching the real teaching content above. */
+.garden-flourish { text-align: center; margin-top: var(--space-sm); opacity: 0.75; }
+.garden-flourish svg { display: inline-block; }
+.garden-flourish--top svg { width: 28px; height: 22px; }
+.garden-flourish--bottom { margin-top: var(--space-xl); display: flex; justify-content: center; gap: var(--space-lg); }
+.garden-flourish--bottom svg { width: 26px; height: 20px; opacity: 0.7; }
+
+/* -------------------- The Captain of Your Ship (Awareness & Acceptance pillar page, 6 August 2026) --------------------
+   Flagship teaching tool for Pillar A. Built as a family of small, elegant line-art SVG icons
+   (one sprite sheet, referenced by <use>) in navy ink with the pillar's own burnt-orange accent
+   used sparingly for a single highlight per icon — deliberately calmer and more monochrome than
+   the Heart Garden's icon set, matching this pillar's more introspective tone. "Explore the Ship"
+   reuses the same accessible <details>/<summary> disclosure pattern proven on the Love page, but
+   arranged in a calm, orderly grid rather than a tilted/staggered one — this pillar's brief asked
+   for "calm, clean, minimal" more insistently than playful, so the interaction stays but the
+   organic scatter doesn't. No JavaScript. */
+.ship-hero-icon { background: var(--cream-100); display: flex; align-items: center; justify-content: center; padding: var(--space-2xl); }
+.ship-hero-icon svg { width: 100%; height: auto; max-width: 260px; color: var(--pillar-awareness); display: block; }
+
+.captain-concept-icon { width: 120px; height: auto; max-width: 100%; margin: 0 auto var(--space-md); display: block; color: var(--navy-800); }
+
+.ship-explorer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-lg) var(--space-md);
+  margin-top: var(--space-lg);
+}
+.ship-item { margin: 0; text-align: center; }
+.ship-item > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.ship-item > summary::-webkit-details-marker { display: none; }
+.ship-item > summary:hover { background: var(--cream-100); transform: translateY(-2px); }
+.ship-item > summary:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; border-radius: var(--radius); }
+.ship-item-icon { width: 56px; height: 56px; margin: 0 auto var(--space-xs); color: var(--navy-800); }
+.ship-item-icon svg { width: 100%; height: 100%; display: block; }
+.ship-item-label { font-family: var(--font-heading); font-weight: 600; font-size: 1rem; color: var(--navy-900); margin: 0; }
+.ship-item-detail { max-width: 32ch; margin: var(--space-sm) auto 0; }
+.ship-item-detail p { font-size: 0.92rem; color: var(--navy-700); }
+.ship-item-detail p + p { margin-top: 0.5em; }
+.ship-item[open] .ship-item-detail { animation: ship-reveal 0.35s ease; }
+@keyframes ship-reveal { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .ship-item[open] .ship-item-detail { animation: none; }
+  .ship-item > summary { transition: none; }
+}
+
+/* -------------------- Pull quote & small tag row (generic, reusable) --------------------
+   New with the Unpack, Understand & Unify page (7 August 2026), but deliberately generic —
+   any pillar page can use these. A pull-quote is for a single resonant line that deserves
+   room to breathe (no box, no border, just scale and space); a tag-row is for a short list of
+   related words presented inline with a centred dot, the same small-caps treatment already
+   used inside The Life Picture™ artwork itself for things like "Values • Purpose • Boundaries". */
+.pull-quote {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: clamp(1.35rem, 1vw + 1.1rem, 1.7rem);
+  color: var(--navy-900);
+  max-width: 34ch;
+  margin: var(--space-lg) auto;
+  text-align: center;
+  line-height: 1.35;
+}
+.tag-row {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5em;
+  font-size: 0.9rem; color: var(--navy-700); margin-top: var(--space-sm);
+}
+.tag-row span:not(:last-child)::after { content: "\2022"; margin-left: 0.5em; color: var(--pillar-accent, var(--color-accent)); }
+
+/* -------------------- The Life Picture™ (Unpack, Understand & Unify pillar page, 7 August 2026) --------------------
+   Flagship teaching tool for Pillar U, transcribed from Jo-Dee's locked visual specification
+   (Website Assets/Brand Assets/Visual World/the-life-picture-master.png) — a bordered jigsaw of
+   18 named pieces plus an 8-piece "discard pile" of limiting beliefs. Same design decision as
+   The Captain of Your Ship: translated into simple, original tile icons rather than embedding
+   the dense infographic itself (illegible at mobile widths) — see that page's own DESIGN NOTE
+   for the fuller reasoning, it applies here unchanged.
+   Each kept piece gets one of a small set of warm, muted colours approximating (not pixel-
+   sampled from) the artwork's own palette, so the grid reads as varied and hand-considered
+   rather than uniform — set per-item via inline --piece-accent, the same technique already
+   used for the Heart Garden's per-item colours. */
+/* Approximate palette, warm and muted, inspired by (not sampled pixel-for-pixel from) the
+   artwork's own painted piece colours — enough variety that the grid doesn't read as flat. */
+:root {
+  --lp-rose: #B97768;       --lp-rose-rgb: 185,119,104;
+  --lp-sage: #8FA37E;       --lp-sage-rgb: 143,163,126;
+  --lp-blue: #7F97A8;       --lp-blue-rgb: 127,151,168;
+  --lp-mustard: #C99A3E;    --lp-mustard-rgb: 201,154,62;
+  --lp-terracotta: #BD7245; --lp-terracotta-rgb: 189,114,69;
+  --lp-tan: #B5A47C;        --lp-tan-rgb: 181,164,124;
+}
+/* -rgb triplets added 8 August 2026 ("Task 80", item 1) so the piece-hover glow (below) can use
+   a proper translucent rgba() tint instead of a full-opacity box-shadow colour — the same
+   established sitewide technique already used for card hover glows (see `rgba(var(--pillar-rgb),
+   0.55)` elsewhere in this file). A flat-opacity coloured shadow read slightly too strong to
+   call "soft" on some of the brighter accents; this keeps the effect genuinely subtle. */
+.picture-explorer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-lg) var(--space-md);
+  margin-top: var(--space-lg);
+}
+.picture-piece { margin: 0; text-align: center; }
+.picture-piece > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.picture-piece > summary::-webkit-details-marker { display: none; }
+.picture-piece > summary:hover,
+.picture-piece > summary:focus-visible {
+  background: var(--cream-100);
+  transform: translateY(-2px);
+  /* Added 8 August 2026 ("Task 79"): a soft, piece-coloured glow on hover/focus — the Review
+     Council's independent, cross-reviewer finding was that nothing signalled these tiles are
+     interactive. This plus the +/× cue below are the fix: quiet enough not to look busy, clear
+     enough that a first touch/hover reads as "this opens." Softened 8 August 2026 ("Task 80",
+     item 1) from a full-opacity coloured shadow to a translucent rgba() tint — self-QA found the
+     original read a touch stronger than "soft" on the brighter accents. --piece-accent-rgb is
+     set alongside --piece-accent inline on every tile; falls back to a quiet navy if absent. */
+  box-shadow: 0 8px 20px -10px rgba(var(--piece-accent-rgb, 15,31,56), 0.38);
+}
+.picture-piece--centre > summary:hover,
+.picture-piece--centre > summary:focus-visible {
+  /* The Choice tile has no --piece-accent (it's solid gold in the artwork, not part of the
+     rotating palette) — its own glow uses the same Primary Gold token as its label/cue. */
+  box-shadow: 0 8px 20px -10px rgba(var(--colour-primary-gold-rgb), 0.38);
+}
+.picture-piece > summary:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; border-radius: var(--radius); }
+/* The "+" interaction cue: a small, quiet, always-present hint that a piece expands. Rotates to
+   a "×" on open, doubling as a close affordance. aria-hidden because <details>/<summary> already
+   carries native expanded/collapsed state to assistive tech — this is a purely visual cue for
+   sighted mouse/touch users, who previously had no signal at all. */
+.picture-piece-cue {
+  display: block;
+  margin-top: 0.3em;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--piece-accent, var(--pillar-accent));
+  opacity: 0.5;
+  transition: opacity 0.2s ease, transform 0.25s ease;
+}
+.picture-piece > summary:hover .picture-piece-cue,
+.picture-piece > summary:focus-visible .picture-piece-cue { opacity: 1; }
+.picture-piece[open] .picture-piece-cue { transform: rotate(45deg); opacity: 0.85; }
+.picture-piece--centre .picture-piece-cue { color: var(--colour-primary-gold-text); }
+.picture-piece-icon { width: 52px; height: 52px; margin: 0 auto var(--space-xs); color: var(--piece-accent, var(--navy-800)); }
+.picture-piece-icon svg { width: 100%; height: 100%; display: block; }
+/* Added 8 August 2026: the piece icons are now real cropped photos of Jo-Dee's own Piece
+   Library artwork (images/life-picture-pieces/*.png) rather than flat currentColor SVG shapes
+   — see laughter-method-unpack.html's file-header comment ("TASK 78"). object-fit: contain
+   keeps each piece's true proportions inside the same unchanged 52×52 box (the source crops
+   aren't perfectly square, so stretching would distort them). The --piece-accent custom
+   property and the .picture-piece-icon svg rule above are left in place, unused by the new
+   raster icons, in case any page ever needs the flat-vector version again. */
+.picture-piece-icon img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.picture-piece-label { font-family: var(--font-heading); font-weight: 600; font-size: 0.98rem; color: var(--navy-900); margin: 0; }
+.picture-piece-detail { max-width: 30ch; margin: var(--space-sm) auto 0; }
+.picture-piece-detail p { font-size: 0.9rem; color: var(--navy-700); margin: 0; }
+.picture-piece-detail p + p { margin-top: 0.5em; font-style: italic; }
+.picture-piece[open] .picture-piece-detail { animation: ship-reveal 0.35s ease; }
+
+/* The centre piece — CHOICE — is deliberately the one solid-gold, emphasised tile, matching
+   its role in the artwork ("this is where my power lives"). Updated 8 August 2026 at Jo-Dee's
+   request from the site's legacy --copper-600/700 (read as brown) to the official Primary Gold
+   token (--colour-primary-gold, sampled directly from the approved brand artwork) — the true
+   "Kintsugi gold," and the first live use of this token anywhere on the site ahead of the
+   planned sitewide Brand Polish Pass. Text variant is the same token's pre-derived AA-safe
+   shade (~4.6:1 on cream), same convention as every other pillar's "-text" variant. No other
+   piece on the page changes colour — this rule only ever targets .picture-piece--centre. */
+.picture-piece--centre .picture-piece-icon { color: var(--colour-primary-gold); }
+.picture-piece--centre .picture-piece-label { color: var(--colour-primary-gold-text); }
+
+/* The discard pile — 8 limiting beliefs "set down," not carried into today's picture. Muted,
+   slightly smaller, a dashed outline standing in for "no longer part of the picture." */
+.picture-discard-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--space-md) var(--space-sm);
+  margin-top: var(--space-lg);
+}
+.picture-discard-item {
+  text-align: center;
+  padding: var(--space-sm);
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius);
+  opacity: 0.75;
+}
+.picture-discard-item svg { width: 34px; height: 34px; color: var(--navy-700); opacity: 0.6; margin-bottom: 0.4em; }
+/* Added 8 August 2026: discard-pile icons are now real cropped, muted/aged pieces from the
+   Piece Library artwork (images/life-picture-pieces/discard-*.png — see laughter-method-unpack
+   .html's file-header comment). Sized slightly larger than the old 34px flat outline (which was
+   deliberately faint since it had no texture of its own to show) so the plaster/ceramic grain
+   actually reads at a glance; opacity raised for the same reason — the "worn, faded, dusty" look
+   is now baked into the pixels themselves via desaturation, so stacking the old heavy 0.6 fade
+   on top made them nearly disappear against the card. */
+.picture-discard-item img { width: 40px; height: 40px; object-fit: contain; opacity: 0.85; margin-bottom: 0.4em; }
+.picture-discard-item p { font-family: var(--font-heading); font-style: italic; font-size: 0.9rem; color: var(--navy-700); margin: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .picture-piece[open] .picture-piece-detail { animation: none; }
+  .picture-piece > summary { transition: none; }
+  .picture-piece-cue { transition: none; }
+}
+
+.seaworthy-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-lg) var(--space-xl);
+  margin-top: var(--space-lg);
+}
+.seaworthy-item { text-align: center; max-width: 130px; }
+.seaworthy-item-icon { width: 36px; height: 36px; margin: 0 auto var(--space-xs); color: var(--pillar-awareness-text); }
+.seaworthy-item-icon svg { width: 100%; height: 100%; display: block; }
+.seaworthy-item h3 { font-size: 0.9rem; margin-bottom: 0.2rem; }
+.seaworthy-item p { font-size: 0.85rem; color: var(--navy-700); }
+
+/* Multi-question variant of .reflection-block (see COMPONENT-LIBRARY.md) — same left-border/
+   cream-panel treatment, but holding a calm vertical list of several questions instead of one
+   large prompt, since this pillar's Reflection section genuinely has six distinct questions
+   rather than one. Each question is deliberately smaller than .reflection-prompt so six of them
+   together still read as calm, not as six shouted headlines. */
+.reflection-list { list-style: none; margin: var(--space-md) 0 0; padding: 0; display: grid; gap: var(--space-sm); }
+.reflection-list li {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: var(--navy-900);
+}
+
+/* -------------------- Utility -------------------- */
+.divider { height: 1px; background: var(--color-border); margin-block: var(--space-lg); border: none; }
+.muted { color: var(--navy-700); }
+.max-w-prose { max-width: 65ch; }
+.placeholder-note {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--navy-900);
+  background: var(--copper-100);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.4rem;
+}
+
+/* -------------------- 404 / Legal simple pages -------------------- */
+.simple-page { padding-block: var(--space-2xl); max-width: 70ch; margin-inline: auto; }

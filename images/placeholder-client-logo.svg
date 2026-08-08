@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" role="img" aria-labelledby="t7 d7">
+  <title id="t7">Placeholder client logo</title>
+  <desc id="d7">Replace with a real client or partner logo before launch.</desc>
+  <rect width="200" height="80" fill="none"/>
+  <rect x="4" y="24" width="192" height="32" rx="4" fill="#17294A" opacity="0.15"/>
+  <text x="100" y="45" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#17294A">CLIENT LOGO</text>
+</svg>

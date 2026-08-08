@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="t6 d6">
+  <title id="t6">Placeholder speaker reel video</title>
+  <desc id="d6">Replace with an embedded speaker reel video before launch.</desc>
+  <rect width="1280" height="720" fill="#0F1F38"/>
+  <circle cx="640" cy="330" r="70" fill="#C17F59"/>
+  <path d="M615 300 L680 330 L615 360 Z" fill="#FAF6EF"/>
+  <text x="640" y="460" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#FAF6EF">PLACEHOLDER — Speaker reel video</text>
+  <text x="640" y="492" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#DDA57F">Embed final video (16:9) before launch</text>
+</svg>

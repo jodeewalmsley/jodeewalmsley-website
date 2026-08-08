@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="t-res d-res">
+  <title id="t-res">Placeholder photograph for the Resilience pillar page</title>
+  <desc id="d-res">Replace with a warm, editorial-style photograph or illustration representing Resilience before launch.</desc>
+  <rect width="1200" height="900" fill="#FBF3E4"/>
+  <rect x="0" y="0" width="1200" height="900" fill="#EAA226" opacity="0.10"/>
+  <g stroke="#0F1F38" stroke-width="1.5" opacity="0.15">
+    <line x1="0" y1="0" x2="1200" y2="900"/>
+    <line x1="1200" y1="0" x2="0" y2="900"/>
+  </g>
+  <text x="600" y="440" text-anchor="middle" font-family="Georgia, serif" font-size="32" fill="#0F1F38">PLACEHOLDER</text>
+  <text x="600" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#9A660A">Resilience pillar photograph — replace before launch</text>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="t9 d9">
+  <title id="t9">Placeholder blog post image</title>
+  <desc id="d9">Replace with a real image for this article before launch.</desc>
+  <rect width="800" height="500" fill="#F3ECE0"/>
+  <rect x="0" y="0" width="800" height="500" fill="#17294A" opacity="0.05"/>
+  <circle cx="400" cy="230" r="80" fill="#C17F59" opacity="0.25"/>
+  <text x="400" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#A9673F">PLACEHOLDER IMAGE</text>
+</svg>

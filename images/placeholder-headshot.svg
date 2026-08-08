@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t3 d3">
+  <title id="t3">Placeholder headshot photograph of Jo-Dee Walmsley</title>
+  <desc id="d3">Replace with a professional headshot before launch.</desc>
+  <rect width="800" height="800" fill="#F1DCC9"/>
+  <circle cx="400" cy="330" r="130" fill="#0F1F38" opacity="0.85"/>
+  <path d="M180 720 Q400 520 620 720 L620 800 L180 800 Z" fill="#0F1F38" opacity="0.85"/>
+  <text x="400" y="600" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#A9673F">PLACEHOLDER HEADSHOT</text>
+</svg>

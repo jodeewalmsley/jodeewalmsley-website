@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="t8 d8">
+  <title id="t8">Placeholder testimonial photograph</title>
+  <desc id="d8">Replace with the client's photograph before launch.</desc>
+  <circle cx="60" cy="60" r="60" fill="#EAE0CF"/>
+  <circle cx="60" cy="46" r="20" fill="#A9673F" opacity="0.6"/>
+  <path d="M20 108 Q60 76 100 108 Z" fill="#A9673F" opacity="0.6"/>
+</svg>
